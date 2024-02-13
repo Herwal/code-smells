@@ -1,67 +1,90 @@
 package nerdschool.bar;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class Pub {
     public static final String ONE_BEER = "hansa";
     public static final String ONE_CIDER = "grans";
     public static final String A_PROPER_CIDER = "strongbow";
     public static final String GT = "gt";
     public static final String BACARDI_SPECIAL = "bacardi_special";
+    public static int PRICE;
+    public static final int STUDENT_DISCOUNT = 10;
+    public static Map<String, Integer> drinksMap = new HashMap<>();
 
-    public int computeCost(String drink, boolean student, int amount) {
-
-        if (amount > 2 && (drink == GT || drink == BACARDI_SPECIAL)) {
-            throw new RuntimeException("Too many drinks, max 2.");
-        }
-        int price;
-        if (drink.equals(ONE_BEER)) {
-            price = 74;
-        }
-        else if (drink.equals(ONE_CIDER)) {
-            price = 103;
-        }
-        else if (drink.equals(A_PROPER_CIDER)) price = 110;
-        else if (drink.equals(GT)) {
-            price = ingredient6() + ingredient5() + ingredient4();
-        }
-        else if (drink.equals(BACARDI_SPECIAL)) {
-            price = ingredient6()/2 + ingredient1() + ingredient2() + ingredient3();
-        }
-        else {
-            throw new RuntimeException("No such drink exists");
-        }
-        if (student && (drink == ONE_CIDER || drink == ONE_BEER || drink == A_PROPER_CIDER)) {
-            price = price - price/10;
-        }
-        return price*amount;
+    public Pub() {
+        drinksMap.put(ONE_BEER, 74);
+        drinksMap.put(ONE_CIDER, 103);
+        drinksMap.put(A_PROPER_CIDER, 110);
+        drinksMap.put(GT, priceGT());
+        drinksMap.put(BACARDI_SPECIAL, priceBacardi());
     }
 
-    //one unit of rum
-    private int ingredient1() {
+    public int computeCost(String drink, boolean student, int amountBought) {
+        if (!validDrink(drink)) {
+            throw new RuntimeException("No such drink exists");
+        }
+        if (InvalidOrder(drink, amountBought)) {
+            throw new RuntimeException("Too many drinks, max 2.");
+        }
+        PRICE = getPrice(drink);
+
+        if (studentDiscount(drink, student)) {
+            PRICE -= PRICE / STUDENT_DISCOUNT;
+        }
+        return PRICE * amountBought;
+    }
+
+    private boolean InvalidOrder(String drink, int amountBought) {
+        int maxDrinks = 2;
+        return (amountBought > maxDrinks && (Objects.equals(drink, GT) || Objects.equals(drink, BACARDI_SPECIAL)));
+    }
+
+    private boolean validDrink(String drink) {
+        return drinksMap.containsKey(drink);
+    }
+
+    private int getPrice(String drink) {
+        return (drinksMap.get(drink));
+    }
+
+    private boolean studentDiscount(String drink, boolean student) {
+        return (student && (drink.equals(ONE_BEER) || drink.equals(ONE_CIDER) || drink.equals(A_PROPER_CIDER)));
+    }
+
+
+    private int priceRum() {
         return 65;
     }
 
-    //one unit of grenadine
-    private int ingredient2() {
+    private int priceGrenadine() {
         return 10;
     }
 
-    //one unit of lime juice
-    private int ingredient3() {
-        return 10;
-    }
-    
-    //one unit of green stuff
-    private int ingredient4() {
+    private int priceLimeJuice() {
         return 10;
     }
 
-    //one unit of tonic water
-    private int ingredient5() {
+    private int priceGreenStuff() {
+        return 10;
+    }
+
+    private int priceTonicWater() {
         return 20;
     }
 
-    //one unit of gin
-    private int ingredient6() {
+    private int priceGin() {
         return 85;
     }
+
+    private int priceGT() {
+        return priceGin() + priceTonicWater() + priceGreenStuff();
+    }
+
+    private int priceBacardi() {
+        return  priceGin()/2 + priceRum() + priceGrenadine() + priceLimeJuice();
+    }
+
 }
