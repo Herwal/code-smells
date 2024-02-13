@@ -10,9 +10,9 @@ public class Pub {
     public static final String A_PROPER_CIDER = "strongbow";
     public static final String GT = "gt";
     public static final String BACARDI_SPECIAL = "bacardi_special";
-    public static int PRICE;
-    private static final int STUDENT_DISCOUNT = 10;
-    private static final Map<String, Integer> drinksMap = new HashMap<>();
+    private int PRICE;
+    private int STUDENT_DISCOUNT = 10;
+    private Map<String, Integer> drinksMap = new HashMap<>();
 
     public Pub() {
         drinksMap.put(ONE_BEER, 74);
@@ -53,7 +53,6 @@ public class Pub {
     private boolean isStudent(String drink, boolean student) {
         return (student && (drink.equals(ONE_BEER) || drink.equals(ONE_CIDER) || drink.equals(A_PROPER_CIDER)));
     }
-
 
     private int priceRum() {
         return 65;
