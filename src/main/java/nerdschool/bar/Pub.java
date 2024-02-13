@@ -23,26 +23,26 @@ public class Pub {
     }
 
     public int computeCost(String drink, boolean student, int amountBought) {
-        if (!validDrink(drink)) {
+        if (!isValidDrink(drink)) {
             throw new RuntimeException("No such drink exists");
         }
-        if (InvalidOrder(drink, amountBought)) {
+        if (isInvalidOrder(drink, amountBought)) {
             throw new RuntimeException("Too many drinks, max 2.");
         }
-        PRICE = getPrice(drink);
 
-        if (studentDiscount(drink, student)) {
+        PRICE = getPrice(drink);
+        if (isStudent(drink, student)) {
             PRICE -= PRICE / STUDENT_DISCOUNT;
         }
         return PRICE * amountBought;
     }
 
-    private boolean InvalidOrder(String drink, int amountBought) {
+    private boolean isInvalidOrder(String drink, int amountBought) {
         int maxDrinks = 2;
         return (amountBought > maxDrinks && (Objects.equals(drink, GT) || Objects.equals(drink, BACARDI_SPECIAL)));
     }
 
-    private boolean validDrink(String drink) {
+    private boolean isValidDrink(String drink) {
         return drinksMap.containsKey(drink);
     }
 
@@ -50,7 +50,7 @@ public class Pub {
         return (drinksMap.get(drink));
     }
 
-    private boolean studentDiscount(String drink, boolean student) {
+    private boolean isStudent(String drink, boolean student) {
         return (student && (drink.equals(ONE_BEER) || drink.equals(ONE_CIDER) || drink.equals(A_PROPER_CIDER)));
     }
 
