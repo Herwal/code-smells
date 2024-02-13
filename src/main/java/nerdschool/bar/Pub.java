@@ -11,8 +11,8 @@ public class Pub {
     public static final String GT = "gt";
     public static final String BACARDI_SPECIAL = "bacardi_special";
     public static int PRICE;
-    public static final int STUDENT_DISCOUNT = 10;
-    public static Map<String, Integer> drinksMap = new HashMap<>();
+    private static final int STUDENT_DISCOUNT = 10;
+    private static final Map<String, Integer> drinksMap = new HashMap<>();
 
     public Pub() {
         drinksMap.put(ONE_BEER, 74);
